@@ -1,0 +1,541 @@
+/* Minimal base styles. This project originally used Tailwind classes; to get identical
+   visuals install and configure Tailwind. For now these rules make the app readable. */
+html,body,#root{height:100%;}
+body{margin:0;font-family:Inter, ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;}
+.smooth-scroll-enabled {
+   scroll-behavior: smooth;
+}
+.max-w-7xl{max-width:80rem;margin:0 auto}
+.mx-auto{margin-left:auto;margin-right:auto}
+.px-4{padding-left:1rem;padding-right:1rem}
+.py-16{padding-top:4rem;padding-bottom:4rem}
+.grid{display:grid}
+.grid-cols-1{grid-template-columns:1fr}
+@media(min-width:768px){.md\:grid-cols-2{grid-template-columns:repeat(2,1fr)}}
+.gap-6{gap:1.5rem}
+.rounded-xl{border-radius:0.75rem}
+.rounded-2xl{border-radius:1rem}
+.p-6{padding:1.5rem}
+.p-8{padding:2rem}
+.text-center{text-align:center}
+.cursor-pointer{cursor:pointer}
+.shadow-2xl{box-shadow:0 25px 50px rgba(0,0,0,0.25)}
+.aspect-square{aspect-ratio:1/1}
+.overflow-hidden{overflow:hidden}
+.transition-all{transition:all 0.2s ease}
+.hover\:scale-\[1\.02\]:hover{transform:scale(1.02)}
+.hover\:shadow-2xl:hover{box-shadow:0 25px 50px rgba(0,0,0,0.25)}
+
+/* Simple dark mode helpers */
+.dark\:bg-gray-800{background:#1f2937}
+.bg-gray-900{background:#111827}
+.bg-gray-50{background:#F9FAFB}
+.bg-white{background:#fff}
+.text-white{color:#fff}
+.text-gray-900{color:#111827}
+.text-gray-800{color:#1f2937}
+.text-gray-700{color:#374151}
+.text-gray-600{color:#4B5563}
+.text-gray-500{color:#6B7280}
+.text-gray-400{color:#9CA3AF}
+
+/* Navbar CSS (provided) */
+/* Navbar Container */
+.navbar {
+   position: sticky;
+   top: 0;
+   z-index: 40;
+   /* Light mode navbar color requested */
+   background-color: #2F7C31;
+   box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+   transition: background-color 300ms;
+}
+
+/* Dark Mode Navbar */
+.navbar.dark-mode {
+   background-color: #1F2937;
+}
+
+/* Navbar Inner Container */
+.navbar-container {
+   max-width: 1280px;
+   margin: 0 auto;
+   padding-left: 1rem;
+   padding-right: 1rem;
+}
+
+@media (min-width: 640px) {
+   .navbar-container {
+      padding-left: 1.5rem;
+      padding-right: 1.5rem;
+   }
+}
+
+@media (min-width: 1024px) {
+   .navbar-container {
+      padding-left: 2rem;
+      padding-right: 2rem;
+   }
+}
+
+/* Navbar Content */
+.navbar-content {
+   display: flex;
+   justify-content: space-between;
+   align-items: center;
+   height: 4rem; /* 64px */
+}
+
+/* Branding Section (Left Side) */
+.navbar-brand {
+   display: flex;
+   align-items: center;
+   gap: 0.75rem; /* 12px */
+}
+
+.navbar-icon {
+   font-size: 1.875rem; /* 30px */
+}
+
+.navbar-title {
+   font-size: 1.125rem; /* 18px */
+   font-weight: 700;
+   /* Title should be white in light mode */
+   color: #ffffff;
+}
+
+.navbar-title.dark-mode {
+   color: #ffffff;
+}
+
+.navbar-subtitle {
+   font-size: 0.75rem; /* 12px */
+   /* Subtitle should be white in the green navbar (light mode) */
+   color: #ffffff;
+}
+
+/* Navigation Menu (Right Side) */
+.navbar-menu {
+   display: flex;
+   align-items: center;
+   gap: 1.5rem; /* 24px */
+}
+
+/* Category Buttons */
+.category-button {
+   padding: 0.5rem 1rem; /* 8px 16px */
+   border-radius: 0.5rem; /* 8px */
+   font-weight: 500;
+   font-size: 1rem; /* 16px */
+   border: none;
+   cursor: pointer;
+   transition: all 300ms;
+   background-color: transparent;
+   /* Ensure category text is white on the green navbar */
+   color: #ffffff;
+}
+
+/* Easy Button */
+.category-button.easy {
+   /* keep label white on green navbar */
+   color: #ffffff;
+}
+
+.category-button.easy:hover {
+   background-color: #F3F4F6;
+}
+
+.category-button.easy.active {
+   background-color: #2F7C31;
+   color: #ffffff;
+}
+
+/* Medium Button */
+.category-button.medium {
+   /* keep label white on green navbar */
+   color: #ffffff;
+}
+
+.category-button.medium:hover {
+   background-color: #F3F4F6;
+}
+
+.category-button.medium.active {
+   background-color: #0072BC;
+   color: #ffffff;
+}
+
+/* Hard Button */
+.category-button.hard {
+   /* keep label white on green navbar */
+   color: #ffffff;
+}
+
+.category-button.hard:hover {
+   background-color: #F3F4F6;
+}
+
+.category-button.hard.active {
+   background-color: #EF4444;
+   color: #ffffff;
+}
+
+/* Get All Button */
+.category-button.all {
+   /* keep label white on green navbar */
+   color: #ffffff;
+}
+
+.category-button.all:hover {
+   background-color: #F3F4F6;
+}
+
+.category-button.all.active {
+   background-color: #0072BC;
+   color: #ffffff;
+}
+
+/* Dark Mode Button Styles */
+.navbar.dark-mode .category-button {
+   color: #D1D5DB;
+}
+
+.navbar.dark-mode .category-button:hover {
+   background-color: #374151;
+}
+
+/* Dark Mode Toggle Button */
+.dark-mode-toggle {
+   padding: 0.5rem;
+   border-radius: 0.5rem;
+   background-color: #F3F4F6;
+   color: #374151;
+   border: none;
+   cursor: pointer;
+   transition: all 300ms;
+   font-size: 1.25rem;
+}
+
+.dark-mode-toggle:hover {
+   background-color: #E5E7EB;
+}
+
+.dark-mode-toggle.dark {
+   background-color: #374151;
+   color: #FBBF24;
+}
+
+/* Improved circular toggle */
+.dark-mode-toggle{
+  width:40px;height:40px;padding:6px;border-radius:9999px;display:inline-flex;align-items:center;justify-content:center;box-shadow:0 2px 8px rgba(0,0,0,0.08);transition:all 220ms ease;background:#F3F4F6;color:#374151;border:none
+}
+.dark-mode-toggle.dark{background:#111827;color:#FBBF24}
+.dark-mode-toggle svg{display:block}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+   .navbar-menu {
+      gap: 0.5rem;
+   }
+  
+   .category-button {
+      padding: 0.375rem 0.75rem;
+      font-size: 0.875rem;
+   }
+  
+   .navbar-title {
+      font-size: 1rem;
+   }
+  
+   .navbar-icon {
+      font-size: 1.5rem;
+   }
+}
+
+/* Desktop/Mobile helpers */
+.desktop-only{display:initial}
+.mobile-only{display:none}
+
+@media(max-width:900px){
+   .desktop-only{display:none}
+   .mobile-only{display:block}
+}
+
+/* Burger button */
+.navbar-burger{
+   font-size:20px;
+   background:transparent;
+   border:none;
+   color: #fff;
+   padding:8px 12px;
+   border-radius:8px;
+}
+
+/* Mobile menu overlay */
+.mobile-menu{
+   position: fixed;
+   inset: 0;
+   background: rgba(0,0,0,0.35);
+   display: none;
+   align-items: flex-start;
+   justify-content: flex-end;
+   z-index: 60;
+}
+.mobile-menu.open{display:flex}
+
+.mobile-menu-inner{
+   width: 320px;
+   max-width: 92%;
+   background: var(--mobile-bg, #0b1220);
+   padding: 20px;
+   box-shadow: -12px 0 30px rgba(0,0,0,0.45);
+   color: #fff;
+   height: 100%;
+   overflow-y: auto;
+}
+
+.mobile-close{
+   background: transparent;
+   color: #fff;
+   border: none;
+   font-size: 20px;
+   float: right;
+}
+
+.fixed{position:fixed}
+.inset-0{top:0;left:0;right:0;bottom:0}
+.z-50{z-index:50}
+
+.top-4{top:1rem}
+.right-4{right:1rem}
+.absolute{position:absolute}
+
+/* small helpers used in markup */
+.text-2xl{font-size:1.5rem}
+.text-3xl{font-size:1.875rem}
+.text-4xl{font-size:2.25rem}
+.text-5xl{font-size:3rem}
+.font-bold{font-weight:700}
+.mb-3{margin-bottom:0.75rem}
+.mb-4{margin-bottom:1rem}
+.mb-6{margin-bottom:1.5rem}
+.mb-8{margin-bottom:2rem}
+.px-4{padding-left:1rem;padding-right:1rem}
+.py-2{padding-top:0.5rem;padding-bottom:0.5rem}
+.rounded-full{border-radius:9999px}
+.text-sm{font-size:0.875rem}
+.font-medium{font-weight:500}
+
+/* Centered section helper: centers content and constrains width */
+.section-centered{
+   display:flex;
+   flex-direction:column;
+   align-items:center;
+   text-align:center;
+   max-width:900px;
+   margin-left:auto;
+   margin-right:auto;
+   padding-left:1rem;
+   padding-right:1rem;
+}
+
+@media(max-width:640px){
+   .section-centered{padding-left:0.75rem;padding-right:0.75rem}
+}
+
+/* Filter bar styles for Puzzles section */
+.filter-bar{
+   display: inline-flex;
+   background: #1f4f1a; /* darker green box background */
+   padding: 8px 12px;
+   gap: 0;
+   align-items: center;
+   border-radius: 12px;
+   box-shadow: 0 8px 28px rgba(15,50,18,0.18);
+   border: 1px solid rgba(255,255,255,0.04);
+   overflow: hidden;
+   width: 85%; /* desktop width per request */
+   justify-content: center;
+   max-width: 1200px;
+}
+
+.filter-bar .filter-item{
+   color: #ffffff;
+   padding: 16px 12px;
+   font-size: 16px;
+   font-weight: 700;
+   background: transparent;
+   border: none;
+   cursor: pointer;
+   position: relative;
+   flex: 1; /* divide width equally across 4 items */
+   text-align: center;
+}
+
+/* Smooth transitions for hover/active states */
+.filter-bar .filter-item{
+   transition: background-color 200ms ease, color 180ms ease, transform 160ms ease;
+}
+.filter-bar .filter-item:hover{
+   transform: translateY(-3px);
+}
+.filter-bar .filter-item:focus{
+   outline: 2px solid rgba(255,255,255,0.12);
+   outline-offset: 2px;
+}
+
+/* separators between items */
+.filter-bar .filter-item + .filter-item{
+   border-left: 1px solid rgba(255,255,255,0.08);
+}
+
+.filter-bar .filter-item:hover{opacity:0.95}
+
+/* White underline for active item */
+.filter-bar .filter-item.active{
+   background: rgba(111, 204, 139, 0.28); /* light green background */
+}
+
+.filter-bar{position:relative}
+
+/* Per-section subtle background shades (light mode). Dark mode uses existing dark backgrounds. */
+.section-home.light-section{background-color: #FFFFFF;} /* pure white */
+.section-about.light-section{background-color: #FBFBFB;} /* very slightly off-white */
+.section-puzzles.light-section{background-color: #F7F9F8;} /* subtle cool-off white for puzzles */
+.section-activite.light-section{background-color: #F5F7FA;} /* light bluish-white */
+.section-team.light-section{background-color: #F9FAFC;} /* near-white with tiny blue hint */
+
+/* Add modest vertical padding so the section backgrounds are visible */
+.section-home, .section-about, .section-puzzles, .section-activite, .section-team{padding-top:28px;padding-bottom:28px}
+
+@media(max-width:640px){
+   .section-home, .section-about, .section-puzzles, .section-activite, .section-team{padding-top:20px;padding-bottom:20px}
+}
+
+/* Full width outer wrappers so background spans entire viewport width */
+.section-outer{
+   width:100vw;
+   position:relative;
+   left:50%;
+   right:50%;
+   margin-left:-50vw;
+   margin-right:-50vw;
+   box-sizing:border-box;
+}
+
+/* Light-mode outer backgrounds and subtle drop shadows for 3D effect */
+.section-home-outer.light-section-outer{background-color:#FFFFFF; box-shadow: 0 6px 18px rgba(16,24,40,0.04);} /* soft */
+.section-about-outer.light-section-outer{background-color:#FBFBFB; box-shadow: 0 8px 26px rgba(16,24,40,0.05);} /* slightly stronger */
+.section-puzzles-outer.light-section-outer{background-color:#F7F9F8; box-shadow: 0 10px 30px rgba(16,24,40,0.06);} /* emphasize puzzles */
+.section-activite-outer.light-section-outer{background-color:#F5F7FA; box-shadow: 0 6px 18px rgba(16,24,40,0.045);} /* lighter */
+.section-team-outer.light-section-outer{background-color:#F9FAFC; box-shadow: 0 8px 22px rgba(16,24,40,0.05);} /* balanced */
+
+/* Dark mode: use transparent outer so dark site background shows; give a faint inset shadow to separate sections */
+.section-outer:not(.light-section-outer){background: transparent; box-shadow: inset 0 1px 0 rgba(255,255,255,0.02);} 
+
+/* Prevent horizontal scroll introduced by 100vw trick on mobile when scrollbars appear */
+html,body{overflow-x:hidden}
+
+@media(max-width:640px){
+   .section-outer{margin-left:calc(-50vw + 0px); margin-right:calc(-50vw + 0px)}
+}
+
+/* Sliding indicator instead of per-button pseudo-element */
+.filter-indicator{
+   position: absolute;
+   bottom: -10px;
+   height: 6px;
+   width: calc((100% - 2px) / 4); /* account for tiny borders */
+   left: calc((100% / 4) * var(--index));
+   background: rgba(111,204,139,1);
+   border-radius: 4px;
+   box-shadow: 0 6px 18px rgba(111,204,139,0.2);
+   transition: left 320ms cubic-bezier(.2,.9,.2,1), width 220ms ease, background-color 200ms ease;
+}
+
+/* remove old per-button after rules (ensure active still has background) */
+.filter-bar .filter-item.active{background: rgba(111, 204, 139, 0.28)}
+
+/* Make underline and active appearance transition smoothly */
+.filter-bar .filter-item.active::after{
+   transition: left 240ms cubic-bezier(.2,.8,.2,1), right 240ms cubic-bezier(.2,.8,.2,1), height 200ms ease, background-color 220ms ease, box-shadow 220ms ease;
+}
+
+/* Selected puzzle entrance animation (pop/fade) */
+.selected-puzzle-card{
+   animation: popup 260ms cubic-bezier(.2,.9,.2,1);
+}
+@keyframes popup{
+   from{opacity:0; transform: translate(-50%,-48%) scale(.985)}
+   to  {opacity:1; transform: translate(-50%,-50%) scale(1)}
+}
+
+@media(max-width:640px){
+      .filter-bar{padding:6px;border-radius:8px;width:92%}
+      .filter-bar .filter-item{padding:10px;font-size:15px}
+}
+
+@media(max-width:420px){
+   .filter-bar{width:96%}
+}
+   @media (min-width:1200px){
+      .filter-bar{width:70%;max-width:1400px}
+   }
+
+/* SelectedPuzzle responsive card */
+.selected-puzzle-card{
+   position: absolute;
+   top: 50%;
+   left: 50%;
+   transform: translate(-50%,-50%);
+   width: 70%; /* desktop: 70% width per request */
+   max-width: 1100px;
+   min-width: 360px;
+   max-height: 90vh;
+   border-radius: 18px;
+   padding: 20px;
+   display: flex;
+   flex-direction: column;
+   align-items: center;
+   overflow: hidden;
+}
+
+.selected-puzzle-image{
+   width: 100%;
+   border-radius: 12px;
+   overflow: hidden;
+   display: block;
+}
+
+.selected-puzzle-image-inner{
+   width: 100%;
+   padding-top: 36%; /* taller visual area */
+   position: relative;
+   display:flex;
+   align-items:center;
+   justify-content:center;
+   font-size:220px;
+}
+
+.selected-puzzle-details{
+   width: 100%;
+   margin-top: 18px;
+   overflow-y: auto;
+   max-height: calc(90vh - 360px);
+   padding-right: 6px;
+}
+
+/* Momentum scrolling and smoothness for touch devices */
+.selected-puzzle-details{
+   -webkit-overflow-scrolling: touch;
+   scroll-behavior: smooth;
+}
+
+@media(max-width:900px){
+   .selected-puzzle-card{width:92%;min-width:unset}
+   .selected-puzzle-image-inner{font-size:140px;padding-top:42%}
+}
+
+@media(max-width:420px){
+   .selected-puzzle-image-inner{font-size:100px;padding-top:56%}
+}
