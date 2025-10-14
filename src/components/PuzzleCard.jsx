@@ -14,7 +14,7 @@ export default function PuzzleCard({ puzzle, onSelect, darkMode }) {
             {puzzle.difficulty.toUpperCase()}
           </span>
           <span className={`text-sm font-medium ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>
-            Click to reveal answer →
+            Click to reveal answerr →
           </span>
         </div>
       </div>
