@@ -3,12 +3,13 @@ FROM node:18-alpine AS myWebImage
 #Inside the container, create a folder /app and move into it.
 WORKDIR /app          
 # Copy package.json and package-lock.json to the working directory.
-COPY package*.json ./
+COPY     package*.json              ./
 #It downloads all dependencies into /app/node_modules.
 RUN npm install
 # Copy the rest of the application code to the working directory.
 COPY . .
 #Build the application for production.
+#It copies files/folders from your build context (your local machine) into the Docker image filesystem.
 RUN npm run myWebImage
 
 #Use a lighter version of Nginx to serve the built application.

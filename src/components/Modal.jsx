@@ -69,6 +69,16 @@ export default function Modal({ puzzle, onClose, darkMode }) {
             >
               {puzzle.name}
             </h2>
+            {puzzle.creator && (
+              <p
+                className={`text-sm mb-4 ${
+                  darkMode ? "text-gray-400" : "text-gray-600"
+                }`}
+              >
+                Created by{" "}
+                <span className="font-semibold">{puzzle.creator}</span>
+              </p>
+            )}
             <div
               className={`p-6 rounded-lg ${
                 darkMode ? "bg-gray-700" : "bg-[#0072BC] bg-opacity-10"

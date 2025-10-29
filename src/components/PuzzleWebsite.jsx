@@ -7,71 +7,20 @@ import PuzzleGrid from "./PuzzleGrid";
 import Modal from "./Modal";
 import TeamGrid from "./TeamGrid";
 import Activities from "./Activities";
+import MiniGames from "./MiniGames";
 import Footer from "./Footer";
 
-const samplePuzzles = [
-  {
-    id: 1,
-    name: "Math Challenge",
-    difficulty: "easy",
-    image: "🔢",
-    answer: "The answer is 42",
-  },
-  {
-    id: 2,
-    name: "Logic Grid",
-    difficulty: "medium",
-    image: "🧩",
-    answer: "Pattern continues with blue square",
-  },
-  {
-    id: 3,
-    name: "Riddle Master",
-    difficulty: "hard",
-    image: "🤔",
-    answer: "The answer is 'silence'",
-  },
-  {
-    id: 4,
-    name: "Number Sequence",
-    difficulty: "easy",
-    image: "📊",
-    answer: "Next number is 89",
-  },
-  {
-    id: 5,
-    name: "Word Puzzle",
-    difficulty: "medium",
-    image: "📝",
-    answer: "Find hidden word by rearranging letters",
-  },
-  {
-    id: 6,
-    name: "Brain Teaser",
-    difficulty: "hard",
-    image: "🧠",
-    answer: "All of them - different perspectives",
-  },
-  {
-    id: 7,
-    name: "Pattern Recognition",
-    difficulty: "easy",
-    image: "🎯",
-    answer: "Pattern repeats every 5 steps",
-  },
-  {
-    id: 8,
-    name: "Strategy Challenge",
-    difficulty: "medium",
-    image: "♟️",
-    answer: "Move knight to E5",
-  },
-];
+const API_BASE =
+  import.meta.env?.VITE_PUZZLES_API ?? "http://172.20.10.3:5000/api/Puzzels";
 
 export default function PuzzleWebsite() {
   const [selectedCategory, setSelectedCategory] = useState("all");
   const [darkMode, setDarkMode] = useState(false);
   const [selectedPuzzle, setSelectedPuzzle] = useState(null);
+  const [puzzles, setPuzzles] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+  const [statusMessage, setStatusMessage] = useState(null);
   const aboutRef = useRef(null);
   const [aboutVisible, setAboutVisible] = useState(false);
 
@@ -104,6 +53,73 @@ export default function PuzzleWebsite() {
     io.observe(el);
     return () => io.disconnect();
   }, []);
+
+  useEffect(() => {
+    const controller = new AbortController();
+    const signal = controller.signal;
+
+    async function fetchPuzzles() {
+      setLoading(true);
+      setError(null);
+      setStatusMessage(null);
+
+      try {
+        const url =
+          selectedCategory === "all"
+            ? `${API_BASE}/GetAllPuzzles`
+            : `${API_BASE}/GetPuzzlesByDifficultyLevel?level=${encodeURIComponent(
+                selectedCategory
+              )}`;
+
+        const response = await fetch(url, { signal });
+
+        if (!response.ok) {
+          throw new Error(`Request failed with status ${response.status}`);
+        }
+
+        const raw = await response.text();
+        let data;
+        try {
+          data = raw ? JSON.parse(raw) : null;
+        } catch (parseError) {
+          data = raw;
+        }
+
+        if (typeof data === "string") {
+          const trimmed = data.trim();
+          setPuzzles([]);
+          setStatusMessage(trimmed || "No puzzles found.");
+          return;
+        }
+
+        if (Array.isArray(data)) {
+          const normalized = data.map((entry) => normalizePuzzle(entry));
+          setPuzzles(normalized);
+          setStatusMessage(
+            normalized.length === 0 ? "No puzzles found." : null
+          );
+          return;
+        }
+
+        setPuzzles([]);
+        setStatusMessage("No puzzles found.");
+      } catch (err) {
+        if (err.name === "AbortError") {
+          return;
+        }
+        setPuzzles([]);
+        setError(err.message ?? "Failed to load puzzles.");
+      } finally {
+        if (!signal.aborted) {
+          setLoading(false);
+        }
+      }
+    }
+
+    fetchPuzzles();
+
+    return () => controller.abort();
+  }, [selectedCategory]);
 
   return (
     <div
@@ -176,9 +192,9 @@ export default function PuzzleWebsite() {
                     Many people think we are a big organization, but we are
                     simply a friendly community that enjoys solving problems
                     together.
-                    <br />          <br />
-                    We work Under The <strong>IEEE Puzzlers</strong> community on{" "}
-                    <strong>IEEE Collabratec</strong>
+                    <br /> <br />
+                    We work Under The <strong>IEEE Puzzlers</strong> community
+                    on <strong>IEEE Collabratec</strong>
                   </p>
                 </article>
                 <article className="about-card about-c-item about-c-up">
@@ -313,12 +329,49 @@ export default function PuzzleWebsite() {
                 style={{ display: "flex", gap: 24, alignItems: "flex-start" }}
               >
                 <div style={{ flex: 1 }}>
-                  <PuzzleGrid
-                    puzzles={samplePuzzles}
-                    onSelect={setSelectedPuzzle}
-                    darkMode={darkMode}
-                    selectedCategory={selectedCategory}
-                  />
+                  {error && !loading && (
+                    <div
+                      className="p-4 rounded-md mb-4"
+                      style={{
+                        background: darkMode
+                          ? "rgba(239,68,68,0.12)"
+                          : "rgba(239,68,68,0.12)",
+                        color: darkMode ? "#fecaca" : "#b91c1c",
+                      }}
+                    >
+                      {error}
+                    </div>
+                  )}
+                  {statusMessage && !loading && !error && (
+                    <div
+                      className="p-4 rounded-md mb-4"
+                      style={{
+                        background: darkMode
+                          ? "rgba(59,130,246,0.12)"
+                          : "rgba(59,130,246,0.12)",
+                        color: darkMode ? "#bfdbfe" : "#1d4ed8",
+                      }}
+                    >
+                      {statusMessage}
+                    </div>
+                  )}
+                  {loading ? (
+                    <div
+                      className="text-center py-12"
+                      style={{
+                        color: darkMode ? "#9ca3af" : "#6b7280",
+                      }}
+                    >
+                      Loading puzzles…
+                    </div>
+                  ) : (
+                    <PuzzleGrid
+                      puzzles={puzzles}
+                      onSelect={setSelectedPuzzle}
+                      darkMode={darkMode}
+                      selectedCategory={selectedCategory}
+                    />
+                  )}
                 </div>
               </div>
             </section>
@@ -353,6 +406,20 @@ export default function PuzzleWebsite() {
           </div>
         </div>
 
+        {/* Mini Games */}
+        <div
+          className={`section-outer section-activite-outer ${
+            darkMode ? "" : "light-section-outer"
+          }`}
+        >
+          <div
+            className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16"
+            style={{ paddingTop: 12, paddingBottom: 48 }}
+          >
+            <MiniGames darkMode={darkMode} />
+          </div>
+        </div>
+
         {/* Modal */}
         {selectedPuzzle && (
           <Modal
@@ -367,3 +434,66 @@ export default function PuzzleWebsite() {
   );
 }
 const indexMap = { all: 0, easy: 1, medium: 2, hard: 3 };
+
+function normalizePuzzle(entry) {
+  const source = entry ?? {};
+  const id =
+    source.id ??
+    source.Id ??
+    (typeof crypto !== "undefined" && typeof crypto.randomUUID === "function"
+      ? crypto.randomUUID()
+      : `puzzle-${Date.now()}-${Math.random().toString(16).slice(2)}`);
+  const difficultyRaw =
+    source.difficultyLevel ?? source.DifficultyLevel ?? "easy";
+  const solution = source.solution ?? source.Solution ?? "";
+  const imageValue = source.image ?? source.Image ?? null;
+  const normalizedDifficulty = normalizeDifficulty(String(difficultyRaw));
+  const creatorRaw =
+    source.creatorName ??
+    source.CreatorName ??
+    source.creator ??
+    source.createdBy ??
+    source.CreatorId;
+
+  return {
+    id: String(id),
+    name: source.name ?? source.Name ?? "Untitled Puzzle",
+    difficulty: normalizedDifficulty,
+    answer: solution,
+    imageUrl: toImageUrl(imageValue),
+    creator: normalizeCreator(creatorRaw),
+  };
+}
+
+function toImageUrl(imageValue) {
+  if (!imageValue) {
+    return null;
+  }
+  if (typeof imageValue === "string" && imageValue.startsWith("data:")) {
+    return imageValue;
+  }
+  return `data:image/png;base64,${imageValue}`;
+}
+
+function normalizeDifficulty(value) {
+  const lowered = value.toLowerCase();
+  if (lowered === "easy" || lowered === "medium" || lowered === "hard") {
+    return lowered;
+  }
+  return "easy";
+}
+
+function normalizeCreator(raw) {
+  if (!raw) {
+    return null;
+  }
+  if (typeof raw === "string") {
+    const trimmed = raw.trim();
+    return trimmed.length > 0 ? trimmed : null;
+  }
+  if (typeof raw === "object") {
+    if (raw.name) return String(raw.name);
+    if (raw.userName) return String(raw.userName);
+  }
+  return null;
+}

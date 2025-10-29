@@ -1792,23 +1792,39 @@ body.dark .btn-outline:hover {
   gap: 16px;
 }
 .activities-carousel {
-  display: grid;
-  grid-auto-flow: column;
-  grid-auto-columns: minmax(320px, 420px);
-  gap: 28px;
-  overflow-x: auto;
-  scroll-snap-type: x mandatory;
+  overflow: hidden;
   padding: 8px 8px 18px 8px;
 }
-.activities-carousel::-webkit-scrollbar {
-  height: 10px;
+.activities-track {
+  display: flex;
+  gap: 28px;
+  column-gap: 28px;
+  transition: transform 420ms cubic-bezier(0.22, 0.61, 0.36, 1);
+  will-change: transform;
 }
-.activities-carousel::-webkit-scrollbar-thumb {
-  background: rgba(0, 0, 0, 0.12);
-  border-radius: 999px;
+
+.mini-games-grid {
+  display: grid;
+  gap: 28px;
+  margin-top: 24px;
+  grid-template-columns: repeat(3, minmax(340px, 1fr));
+  align-items: stretch;
 }
-.dark .activities-carousel::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.18);
+@media (max-width: 1100px) {
+  .mini-games-grid {
+    grid-template-columns: repeat(2, minmax(320px, 1fr));
+  }
+}
+@media (max-width: 720px) {
+  .mini-games-grid {
+    grid-template-columns: repeat(1, minmax(0, 1fr));
+  }
+}
+.mini-game-card {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
 }
 
 .activity-card {
@@ -1831,6 +1847,18 @@ body.dark .btn-outline:hover {
 .activity-image {
   position: relative;
   padding: 12px 12px 0 12px;
+}
+.activity-image-button {
+  display: block;
+  width: 100%;
+  padding: 0;
+  border: none;
+  background: transparent;
+  cursor: zoom-in;
+}
+.activity-image-button:focus {
+  outline: 2px solid rgba(119, 189, 67, 0.65);
+  outline-offset: 3px;
 }
 .activity-image img {
   width: 100%;
@@ -1913,6 +1941,42 @@ body.dark .btn-outline:hover {
   border-color: rgba(2, 159, 211, 0.35);
 }
 
+.activity-lightbox {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.78);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  z-index: 10000;
+}
+.activity-lightbox-image {
+  max-width: min(92vw, 860px);
+  max-height: 90vh;
+  border-radius: 12px;
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.4);
+}
+.activity-lightbox-close {
+  position: absolute;
+  top: 24px;
+  right: 30px;
+  width: 42px;
+  height: 42px;
+  border-radius: 999px;
+  border: none;
+  background: rgba(0, 0, 0, 0.55);
+  color: #fff;
+  font-size: 1.8rem;
+  line-height: 1;
+  cursor: pointer;
+}
+.activity-lightbox-close:hover,
+.activity-lightbox-close:focus {
+  background: rgba(0, 0, 0, 0.75);
+  outline: none;
+}
+
 .carousel-nav-btn {
   width: 36px;
   height: 36px;
@@ -1929,6 +1993,11 @@ body.dark .btn-outline:hover {
 .dark .carousel-nav-btn {
   background: rgb(2, 159, 211);
   box-shadow: 0 6px 20px rgba(2, 159, 211, 0.35);
+}
+.carousel-nav-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  box-shadow: none;
 }
 .carousel-nav-btn.left {
   margin-left: 4px;

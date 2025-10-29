@@ -65,6 +65,12 @@ export default function Navbar({ darkMode, setDarkMode }) {
             >
               Our Activites
             </button>
+            <button
+              className="category-button all"
+              onClick={() => scrollToId("mini-games")}
+            >
+              Our Mini Games
+            </button>
 
             <button
               onClick={() => setDarkMode(!darkMode)}
@@ -206,6 +212,12 @@ export default function Navbar({ darkMode, setDarkMode }) {
               onClick={() => scrollToId("activite")}
             >
               Activite
+            </button>
+            <button
+              className="category-button all"
+              onClick={() => scrollToId("mini-games")}
+            >
+              Our Mini Games
             </button>
           </nav>
         </div>

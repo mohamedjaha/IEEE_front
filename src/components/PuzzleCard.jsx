@@ -7,6 +7,14 @@ export default function PuzzleCard({
   darkMode,
   className = "",
 }) {
+  const imageSrc =
+    puzzle?.imageUrl ||
+    (typeof puzzle?.image === "string" && puzzle.image.startsWith("data:")
+      ? puzzle.image
+      : puzzle?.image
+      ? `data:image/png;base64,${puzzle.image}`
+      : puzz1);
+
   return (
     <div
       onClick={() => onSelect(puzzle)}
@@ -19,7 +27,7 @@ export default function PuzzleCard({
           darkMode ? "bg-gray-700" : "bg-gray-100"
         }`}
       >
-        <img src={puzz1} alt={puzzle.name} className="puzzle-thumb" />
+        <img src={imageSrc} alt={puzzle.name} className="puzzle-thumb" />
       </div>
 
       <div className="p-6">
@@ -30,6 +38,15 @@ export default function PuzzleCard({
         >
           {puzzle.name}
         </h3>
+        {puzzle.creator && (
+          <p
+            className={`text-sm mb-2 ${
+              darkMode ? "text-gray-400" : "text-gray-600"
+            }`}
+          >
+            Created by <span className="font-semibold">{puzzle.creator}</span>
+          </p>
+        )}
         <div className="flex items-center gap-3">
           <span
             className={`pill ${
