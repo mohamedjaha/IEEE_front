@@ -1917,10 +1917,9 @@ body.dark .btn-outline:hover {
     min-height: 220px;
   }
   .team-photo {
-    /* show full portrait without aggressive crop */
-    object-fit: contain;
-    object-position: center;
-    padding: 8px 0; /* small breathing room top/bottom */
+    /* keep a full-bleed look but bias framing downward to include faces */
+    object-fit: cover !important;
+    object-position: center 85% !important; /* favor bottom area (chin/mouth) */
   }
 }
 
