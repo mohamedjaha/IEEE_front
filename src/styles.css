@@ -1912,14 +1912,17 @@ body.dark .btn-outline:hover {
 /* Mobile tweak: avoid cropping faces on small screens */
 @media (max-width: 600px) {
   .team-photo-wrap {
-    /* slightly wider frame on mobile to show more of the face */
-    aspect-ratio: 4 / 3;
-    min-height: 220px;
+    /* Let the image decide the height on small screens to avoid giant empty space */
+    aspect-ratio: auto;
+    min-height: unset;
+    height: auto;
   }
   .team-photo {
-    /* keep a full-bleed look but bias framing downward to include faces */
-    object-fit: cover !important;
-    object-position: center 85% !important; /* favor bottom area (chin/mouth) */
+    width: 100%;
+    height: auto; /* shrink-wrap to content */
+    object-fit: contain !important; /* show full face without crop */
+    object-position: center top !important;
+    padding: 8px 0; /* small breathing room */
   }
 }
 
