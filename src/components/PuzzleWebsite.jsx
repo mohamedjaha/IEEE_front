@@ -65,10 +65,11 @@ export default function PuzzleWebsite() {
       try {
         const url =
           selectedCategory === "all"
-            ? `${API_BASE}/GetAllPuzzels`
-            : `${API_BASE}/GetPuzzelsByDifficultyLevel?level=${encodeURIComponent(
+            ? `${API_BASE}/GetAllPuzzles`
+            : `${API_BASE}/GetPuzzlesByDifficultyLevel?level=${encodeURIComponent(
                 selectedCategory
               )}`;
+
         const response = await fetch(url, { signal });
         if (!response.ok) {
           throw new Error(`Request failed with status ${response.status}`);
