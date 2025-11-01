@@ -1,4 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
+import LazyImage from "./LazyImage";
+import usePrefetchImages from "../hooks/usePrefetchImages";
 const nimGameImg = new URL(
   "../assets/mini games/Plan de travail \u2013 4.png",
   import.meta.url
@@ -9,6 +11,18 @@ const taxmanImg = new URL(
 ).href;
 const subtractionImg = new URL(
   "../assets/mini games/Plan de travail \u2013 6.png",
+  import.meta.url
+).href;
+const nimGameImgDark = new URL(
+  "../assets/mini games/Dark Plan de travail – 4.png",
+  import.meta.url
+).href;
+const taxmanImgDark = new URL(
+  "../assets/mini games/Dark Plan de travail – 5.png",
+  import.meta.url
+).href;
+const subtractionImgDark = new URL(
+  "../assets/mini games/Dark Plan de travail – 6.png",
   import.meta.url
 ).href;
 
@@ -38,6 +52,13 @@ const miniGames = [
 
 export default function MiniGames({ darkMode }) {
   const [activeImage, setActiveImage] = useState(null);
+  const imageSources = useMemo(() => {
+    const base = miniGames.map((game) => game.image);
+    const dark = [nimGameImgDark, taxmanImgDark, subtractionImgDark];
+    // Prefetch both sets so switching theme is smooth
+    return darkMode ? dark.concat(base) : base.concat(dark);
+  }, [darkMode]);
+  usePrefetchImages(imageSources);
 
   useEffect(() => {
     if (!activeImage || typeof window === "undefined") {
@@ -65,42 +86,49 @@ export default function MiniGames({ darkMode }) {
         <span className="brand-accent">Mini Games</span>
       </h2>
       <div className="mini-games-grid">
-        {miniGames.map((game) => (
-          <article
-            key={game.id}
-            className={`activity-card mini-game-card ${
-              darkMode ? "dark-card" : ""
-            }`}
-          >
-            <div className="activity-image">
-              <button
-                type="button"
-                className="activity-image-button"
-                onClick={() =>
-                  setActiveImage({ src: game.image, title: game.title })
-                }
-                aria-label={`View ${game.title}`}
-              >
-                <img
-                  src={game.image}
-                  alt={game.title}
-                  loading="lazy"
-                  width={500}
-                  height={280}
-                  style={{
-                    width: "100%",
-                    objectFit: "cover",
-                    borderRadius: 14,
-                  }}
-                />
-              </button>
-            </div>
-            <div className="activity-body larger">
-              <h3 className="activity-title">{game.title}</h3>
-              <p className="activity-excerpt">{game.description}</p>
-            </div>
-          </article>
-        ))}
+        {miniGames.map((game) => {
+          // choose dark variant when darkMode active
+          let src = game.image;
+          if (darkMode) {
+            if (game.id === "nim") src = nimGameImgDark;
+            if (game.id === "taxman") src = taxmanImgDark;
+            if (game.id === "subtraction") src = subtractionImgDark;
+          }
+          return (
+            <article
+              key={game.id}
+              className={`activity-card mini-game-card ${
+                darkMode ? "dark-card" : ""
+              }`}
+            >
+              <div className="activity-image">
+                <button
+                  type="button"
+                  className="activity-image-button"
+                  onClick={() => setActiveImage({ src, title: game.title })}
+                  aria-label={`View ${game.title}`}
+                >
+                  <LazyImage
+                    src={src}
+                    alt={game.title}
+                    priority
+                    width={500}
+                    height={280}
+                    style={{
+                      width: "100%",
+                      objectFit: "cover",
+                      borderRadius: 14,
+                    }}
+                  />
+                </button>
+              </div>
+              <div className="activity-body larger">
+                <h3 className="activity-title">{game.title}</h3>
+                <p className="activity-excerpt">{game.description}</p>
+              </div>
+            </article>
+          );
+        })}
       </div>
       {activeImage && (
         <div

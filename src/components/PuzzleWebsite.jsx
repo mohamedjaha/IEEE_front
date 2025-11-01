@@ -70,9 +70,7 @@ export default function PuzzleWebsite() {
             : `${API_BASE}/GetPuzzlesByDifficultyLevel?level=${encodeURIComponent(
                 selectedCategory
               )}`;
-
         const response = await fetch(url, { signal });
-
         if (!response.ok) {
           throw new Error(`Request failed with status ${response.status}`);
         }
@@ -193,8 +191,8 @@ export default function PuzzleWebsite() {
                     simply a friendly community that enjoys solving problems
                     together.
                     <br /> <br />
-                    We work Under The <strong>IEEE Puzzlers</strong> community
-                    on <strong>IEEE Collabratec</strong>
+                    We work under the <strong>IEEE Puzzlers</strong> community
+                    on <strong>IEEE Collabratec</strong>.
                   </p>
                 </article>
                 <article className="about-card about-c-item about-c-up">
@@ -204,7 +202,7 @@ export default function PuzzleWebsite() {
                       We organize fun puzzle contests and events for everyone.
                     </li>
                     <li>
-                      We host team‑building games where members learn from each
+                      We host team-building games where members learn from each
                       other.
                     </li>
                     <li>
@@ -212,6 +210,17 @@ export default function PuzzleWebsite() {
                       share the fun!
                     </li>
                   </ul>
+                </article>
+                <article className="about-card about-c-item about-c-down">
+                  <h3 className="about-card-title">
+                    IEEE Puzzlers on Collabratec
+                  </h3>
+                  <p>
+                    <strong>IEEE Puzzlers</strong> is a global recreational math
+                    community on IEEE Collabratec with more than 8,000
+                    participants that develop and share brain-teasers tied to
+                    mathematics and IEEE fields of interest.
+                  </p>
                 </article>
                 <article className="about-card about-c-item about-c-right">
                   <h3 className="about-card-title">Our Goals</h3>

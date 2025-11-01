@@ -112,6 +112,21 @@ body {
   box-shadow: 0 25px 50px rgba(0, 0, 0, 0.25);
 }
 
+/* Shared lazy image states */
+.lazy-loading {
+  opacity: 0.8;
+  filter: blur(4px);
+  transform: scale(1.01);
+  transition: filter 180ms ease, transform 180ms ease, opacity 180ms ease;
+}
+
+.lazy-loaded {
+  opacity: 1;
+  filter: none;
+  transform: none;
+  transition: filter 180ms ease, transform 180ms ease, opacity 180ms ease;
+}
+
 /* Modal image layout: show full image nicely */
 .modal-image {
   width: 100%;
@@ -343,6 +358,47 @@ body {
 }
 
 /* Navbar CSS (provided) */
+
+.navbar-top-strip {
+  background: #5fb94d;
+  color: #ffffff;
+  font-size: 0.85rem;
+  line-height: 1;
+  padding: 0.45rem 0;
+}
+.navbar-top-strip.dark {
+  background: #1f2937;
+  color: #a7f3d0;
+}
+.navbar-top-container {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  display: flex;
+  gap: 1.5rem;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+.navbar-top-link {
+  color: inherit;
+  text-decoration: none;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+}
+.navbar-top-strip.dark .navbar-top-link {
+  color: #a7f3d0;
+}
+.navbar-top-link:hover,
+.navbar-top-link:focus {
+  text-decoration: underline;
+}
+.navbar-top-strip.dark .navbar-top-link:hover,
+.navbar-top-strip.dark .navbar-top-link:focus {
+  color: #d1fae5;
+}
+
 /* Navbar Container */
 .navbar {
   position: sticky;
@@ -625,9 +681,14 @@ body {
   font-size: 20px;
   background: transparent;
   border: none;
-  color: #fff;
+  color: #0b1220;
   padding: 8px 12px;
   border-radius: 8px;
+  transition: color 160ms ease;
+}
+
+.navbar.dark-mode .navbar-burger {
+  color: #f9fafb;
 }
 
 /* Mobile menu overlay */
@@ -661,6 +722,64 @@ body {
   border: none;
   font-size: 20px;
   float: right;
+}
+
+.mobile-controls {
+  display: none;
+  align-items: center;
+  gap: 8px;
+}
+
+@media (max-width: 900px) {
+  .mobile-controls {
+    display: flex;
+  }
+}
+
+.mobile-theme-toggle {
+  align-self: center;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  height: 42px;
+  border-radius: 12px;
+  border: 1px solid rgba(11, 18, 32, 0.18);
+  background: rgba(11, 18, 32, 0.05);
+  color: #0b1220;
+  cursor: pointer;
+  transition: transform 150ms ease, box-shadow 160ms ease, background 160ms ease,
+    border-color 160ms ease;
+}
+
+.mobile-theme-toggle svg {
+  display: block;
+  width: 22px;
+  height: 22px;
+}
+
+.mobile-theme-toggle:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 8px 24px rgba(11, 18, 32, 0.15);
+  background: rgba(11, 18, 32, 0.1);
+}
+
+.navbar.dark-mode .mobile-theme-toggle {
+  border-color: rgba(255, 255, 255, 0.35);
+  background: rgba(255, 255, 255, 0.12);
+  color: #f3f4f6;
+}
+
+.navbar.dark-mode .mobile-theme-toggle:hover {
+  box-shadow: 0 8px 24px rgba(2, 159, 211, 0.35);
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.mobile-menu-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 8px;
 }
 
 .fixed {
@@ -1092,6 +1211,10 @@ body {
   transform: translateY(26px) scale(0.985);
   transition-delay: 280ms;
 }
+.about-cascade .about-c-down {
+  transform: translateY(26px) scale(0.985);
+  transition-delay: 320ms;
+}
 .about-cascade .about-c-right {
   transform: translateX(28px) scale(0.985);
   transition-delay: 380ms;
@@ -1417,7 +1540,7 @@ body.dark .btn-outline:hover {
 /* About section content cards */
 .about-grid {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(4, minmax(240px, 1fr));
   gap: 20px;
   margin-top: 16px;
 }
@@ -1801,6 +1924,30 @@ body.dark .btn-outline:hover {
   column-gap: 28px;
   transition: transform 420ms cubic-bezier(0.22, 0.61, 0.36, 1);
   will-change: transform;
+}
+
+@media (max-width: 720px) {
+  .activities-section {
+    gap: 0;
+  }
+  .activities-carousel {
+    overflow-x: auto;
+    overflow-y: hidden;
+    padding-bottom: 24px;
+    margin: 0 -12px;
+    -webkit-overflow-scrolling: touch;
+  }
+  .activities-carousel::-webkit-scrollbar {
+    display: none;
+  }
+  .activities-track {
+    scroll-snap-type: x mandatory;
+    padding: 0 12px;
+    transition: none;
+  }
+  .activities-track .activity-card {
+    scroll-snap-align: center;
+  }
 }
 
 .mini-games-grid {

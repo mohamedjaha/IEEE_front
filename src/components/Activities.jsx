@@ -9,6 +9,8 @@ import fawazir from "../assets/activites/fawazir.png";
 import TRC from "../assets/activites/TRC2.0-17.jpg";
 import infoSession from "../assets/5.png";
 const IMG = new URL("../assets/activites/IMG_2398.JPG", import.meta.url).href;
+import LazyImage from "./LazyImage";
+import usePrefetchImages from "../hooks/usePrefetchImages";
 
 // Simple activities data; swap with real content when available
 const defaultActivities = [
@@ -67,6 +69,8 @@ export default function Activities({ darkMode, activities }) {
     () => (activities?.length ? activities : defaultActivities),
     [activities]
   );
+  const imageSources = useMemo(() => list.map((item) => item.image), [list]);
+  usePrefetchImages(imageSources);
   const isDirectToActivities =
     typeof window !== "undefined" &&
     (window.location.hash || "").toLowerCase().includes("activite");
@@ -75,6 +79,7 @@ export default function Activities({ darkMode, activities }) {
   const trackRef = useRef(null);
   const [translate, setTranslate] = useState(0);
   const [activeImage, setActiveImage] = useState(null);
+  const isManualScroll = visibleCount <= 1;
 
   useEffect(() => {
     if (typeof window === "undefined") {
@@ -109,6 +114,11 @@ export default function Activities({ darkMode, activities }) {
   }, [list, visibleCount]);
 
   const recalcTranslate = useCallback(() => {
+    if (isManualScroll) {
+      setTranslate(0);
+      return;
+    }
+
     const trackEl = trackRef.current;
     if (!trackEl) {
       setTranslate(0);
@@ -123,7 +133,7 @@ export default function Activities({ darkMode, activities }) {
     const computed = window.getComputedStyle(trackEl);
     const gap = parseFloat(computed.columnGap || computed.gap || "0") || 0;
     setTranslate((width + gap) * currentIndex);
-  }, [currentIndex]);
+  }, [currentIndex, isManualScroll]);
 
   useEffect(() => {
     recalcTranslate();
@@ -162,28 +172,30 @@ export default function Activities({ darkMode, activities }) {
 
   return (
     <div className="activities-section">
-      <button
-        className="carousel-nav-btn left"
-        aria-label="Previous activities"
-        onClick={handlePrev}
-        disabled={currentIndex <= 0}
-        type="button"
-      >
-        ‹
-      </button>
+      {!isManualScroll && (
+        <button
+          className="carousel-nav-btn left"
+          aria-label="Previous activities"
+          onClick={handlePrev}
+          disabled={currentIndex <= 0}
+          type="button"
+        >
+          ‹
+        </button>
+      )}
       <div className="activities-carousel">
         <div
           className="activities-track"
           ref={trackRef}
-          style={{
-            transform: `translate3d(-${translate}px, 0, 0)`,
-          }}
+          style={
+            isManualScroll
+              ? undefined
+              : {
+                  transform: `translate3d(-${translate}px, 0, 0)`,
+                }
+          }
         >
-          {list.map((a, idx) => {
-            const priority =
-              isDirectToActivities &&
-              idx >= currentIndex &&
-              idx < currentIndex + visibleCount;
+          {list.map((a) => {
             return (
               <article
                 key={a.id}
@@ -203,12 +215,10 @@ export default function Activities({ darkMode, activities }) {
                     }
                     aria-label={`View ${a.title} image`}
                   >
-                    <img
+                    <LazyImage
                       src={a.image}
-                      alt="Activity"
-                      loading={priority ? "eager" : "lazy"}
-                      fetchpriority={priority ? "high" : "auto"}
-                      decoding="async"
+                      alt={a.title || "Activity"}
+                      priority
                       width={420}
                       height={230}
                       sizes="(max-width: 640px) 90vw, 420px"
@@ -225,15 +235,17 @@ export default function Activities({ darkMode, activities }) {
           })}
         </div>
       </div>
-      <button
-        className="carousel-nav-btn right"
-        aria-label="Next activities"
-        onClick={handleNext}
-        disabled={currentIndex >= maxStart}
-        type="button"
-      >
-        ›
-      </button>
+      {!isManualScroll && (
+        <button
+          className="carousel-nav-btn right"
+          aria-label="Next activities"
+          onClick={handleNext}
+          disabled={currentIndex >= maxStart}
+          type="button"
+        >
+          ›
+        </button>
+      )}
       {activeImage && (
         <div
           className="activity-lightbox"
