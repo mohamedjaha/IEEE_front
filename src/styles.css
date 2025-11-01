@@ -1874,6 +1874,8 @@ body.dark .btn-outline:hover {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  /* Ensure the focal point stays centered by default */
+  object-position: center;
   display: block;
 }
 /* Center the first card's image as requested */
@@ -1905,6 +1907,21 @@ body.dark .btn-outline:hover {
 }
 .dark .team-role {
   color: #d1d5db;
+}
+
+/* Mobile tweak: avoid cropping faces on small screens */
+@media (max-width: 600px) {
+  .team-photo-wrap {
+    /* slightly wider frame on mobile to show more of the face */
+    aspect-ratio: 4 / 3;
+    min-height: 220px;
+  }
+  .team-photo {
+    /* show full portrait without aggressive crop */
+    object-fit: contain;
+    object-position: center;
+    padding: 8px 0; /* small breathing room top/bottom */
+  }
 }
 
 /* --- Activities carousel and cards --- */
