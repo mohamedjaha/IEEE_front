@@ -10,8 +10,7 @@ import Activities from "./Activities";
 import MiniGames from "./MiniGames";
 import Footer from "./Footer";
 
-const API_BASE =
-  import.meta.env?.VITE_PUZZLES_API ?? "/api/Puzzels";
+const API_BASE = import.meta.env?.VITE_PUZZLES_API ?? "/api/Puzzels";
 
 export default function PuzzleWebsite() {
   const [selectedCategory, setSelectedCategory] = useState("all");
@@ -66,8 +65,8 @@ export default function PuzzleWebsite() {
       try {
         const url =
           selectedCategory === "all"
-            ? `${API_BASE}/GetAllPuzzles`
-            : `${API_BASE}/GetPuzzlesByDifficultyLevel?level=${encodeURIComponent(
+            ? `${API_BASE}/GetAllPuzzels`
+            : `${API_BASE}/GetPuzzelsByDifficultyLevel?level=${encodeURIComponent(
                 selectedCategory
               )}`;
         const response = await fetch(url, { signal });
