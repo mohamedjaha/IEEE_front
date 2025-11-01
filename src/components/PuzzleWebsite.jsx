@@ -11,7 +11,7 @@ import MiniGames from "./MiniGames";
 import Footer from "./Footer";
 
 const API_BASE =
-  import.meta.env?.VITE_PUZZLES_API ?? "http://20.199.64.218:5000/api/Puzzels";
+  import.meta.env?.VITE_PUZZLES_API ?? "/api";
 
 export default function PuzzleWebsite() {
   const [selectedCategory, setSelectedCategory] = useState("all");
